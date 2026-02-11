@@ -28,16 +28,39 @@
         </header>
 
         <section class="card analyzer-card">
-            <div class="input-form">
-                <div class="form-group">
-                    <label for="manualViews">累計再生回数</label>
-                    <input type="number" id="manualViews" placeholder="例: 1000000" autocomplete="off">
+            <div class="tabs">
+                <button class="tab-btn active" data-target="url-input">URLで取得</button>
+                <button class="tab-btn" data-target="manual-input">手動入力</button>
+            </div>
+
+            <div id="url-input" class="input-section">
+                <div class="input-group">
+                    <input type="text" id="videoUrl" placeholder="YouTube動画のURLを貼り付け..." autocomplete="off">
+                    <button id="fetchBtn" class="primary-btn">取得</button>
                 </div>
-                <div class="form-group">
-                    <label for="manualDate">公開日</label>
-                    <input type="date" id="manualDate">
+                <p class="input-hint">※ブラウザ制限により取得できない場合は「手動入力」をお試しください</p>
+            </div>
+
+            <div id="manual-input" class="input-section hidden">
+                <div class="input-form">
+                    <div class="form-group">
+                        <label for="manualViews">累計再生回数</label>
+                        <input type="number" id="manualViews" placeholder="例: 1000000" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="manualDate">公開日</label>
+                        <input type="date" id="manualDate">
+                    </div>
                 </div>
+            </div>
+
+            <div class="action-area">
                 <button id="analyzeBtn" class="primary-btn full-width">判定ランクを計算する</button>
+            </div>
+
+            <div id="loader" class="loader hidden">
+                <div class="spinner"></div>
+                <p>データを取得中...</p>
             </div>
 
             <div id="resultArea" class="result-area hidden">
