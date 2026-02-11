@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoUrlInput = document.getElementById('videoUrl');
     const manualViewsInput = document.getElementById('manualViews');
     const manualDateInput = document.getElementById('manualDate');
+    const relativeTimeInput = document.getElementById('relativeTime');
 
     const finalRank = document.getElementById('finalRank');
     const rankDescription = document.getElementById('rankDescription');
@@ -44,6 +45,55 @@ document.addEventListener('DOMContentLoaded', () => {
         { maxDays: 5475, rank: 'L2', label: '古典（中期）', icon: '🏛' },
         { maxDays: Infinity, rank: 'L3', label: '歴史的古典', icon: '🏛' }
     ];
+
+    // Parse relative time strings like "18分前", "3時間前", "2日前", "1年前"
+    function parseRelativeTime(str) {
+        if (!str) return null;
+        str = str.trim();
+
+        // Match patterns like: 18分前, 3時間前, 2日前, 1か月前, 1ヶ月前, 1年前, 2週間前, 30秒前
+        const match = str.match(/^(\d+)\s*(秒|分|時間|日|週間|週|か月|ヵ月|ヶ月|カ月|ケ月|月|年)\s*前?$/);
+        if (!match) return null;
+
+        const amount = parseInt(match[1]);
+        const unit = match[2];
+
+        const now = new Date();
+
+        switch (unit) {
+            case '秒':
+                now.setSeconds(now.getSeconds() - amount);
+                break;
+            case '分':
+                now.setMinutes(now.getMinutes() - amount);
+                break;
+            case '時間':
+                now.setHours(now.getHours() - amount);
+                break;
+            case '日':
+                now.setDate(now.getDate() - amount);
+                break;
+            case '週間':
+            case '週':
+                now.setDate(now.getDate() - amount * 7);
+                break;
+            case 'か月':
+            case 'ヵ月':
+            case 'ヶ月':
+            case 'カ月':
+            case 'ケ月':
+            case '月':
+                now.setMonth(now.getMonth() - amount);
+                break;
+            case '年':
+                now.setFullYear(now.getFullYear() - amount);
+                break;
+            default:
+                return null;
+        }
+
+        return now;
+    }
 
     // Tab Switching Logic
     tabBtns.forEach(btn => {
@@ -107,13 +157,26 @@ document.addEventListener('DOMContentLoaded', () => {
     analyzeBtn.addEventListener('click', () => {
         const views = parseInt(manualViewsInput.value);
         const dateStr = manualDateInput.value;
+        const relativeStr = relativeTimeInput ? relativeTimeInput.value.trim() : '';
 
-        if (isNaN(views) || views < 0 || !dateStr) {
-            alert('有効な再生回数と日付を入力（またはURLから取得）してください。');
+        // Try to get publishedAt from relative time first, then from date input
+        let publishedAt = null;
+
+        if (relativeStr) {
+            publishedAt = parseRelativeTime(relativeStr);
+            if (!publishedAt) {
+                alert('相対時間の形式が正しくありません。例: 18分前, 3時間前, 2日前, 1年前');
+                return;
+            }
+        } else if (dateStr) {
+            publishedAt = new Date(dateStr);
+        }
+
+        if (isNaN(views) || views < 0 || !publishedAt) {
+            alert('有効な再生回数と日付（または相対時間）を入力してください。');
             return;
         }
 
-        const publishedAt = new Date(dateStr);
         const result = calculateRank(views, publishedAt);
 
         finalRank.textContent = `${result.pRank.rank}-${result.tRank.rank}`;

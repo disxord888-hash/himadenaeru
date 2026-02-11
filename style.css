@@ -189,6 +189,33 @@ input[type="text"] {
     gap: 0.5rem;
 }
 
+.form-group-divider {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.form-group-divider::before,
+.form-group-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: var(--glass-border);
+}
+
+.form-group-divider::before {
+    left: 0;
+}
+
+.form-group-divider::after {
+    right: 0;
+}
+
 .form-group label {
     font-size: 0.9rem;
     color: var(--text-secondary);
