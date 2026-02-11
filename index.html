@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="background-blobs">
         <div class="blob blob-1"></div>
@@ -24,14 +28,16 @@
         </header>
 
         <section class="card analyzer-card">
-            <div class="input-group">
-                <input type="text" id="videoUrl" placeholder="YouTube動画のURLを入力..." autocomplete="off">
-                <button id="analyzeBtn">分析する</button>
-            </div>
-            
-            <div id="loader" class="loader hidden">
-                <div class="spinner"></div>
-                <p>データを取得中...</p>
+            <div class="input-form">
+                <div class="form-group">
+                    <label for="manualViews">累計再生回数</label>
+                    <input type="number" id="manualViews" placeholder="例: 1000000" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="manualDate">公開日</label>
+                    <input type="date" id="manualDate">
+                </div>
+                <button id="analyzeBtn" class="primary-btn full-width">判定ランクを計算する</button>
             </div>
 
             <div id="resultArea" class="result-area hidden">
@@ -41,7 +47,7 @@
                         <div id="finalRank" class="rank-value">--</div>
                         <div id="rankDescription" class="rank-subtext">--</div>
                     </div>
-                    
+
                     <div class="stats-display">
                         <div class="stat-item">
                             <span class="stat-label">1日あたり再生数</span>
@@ -58,31 +64,7 @@
                     </div>
                 </div>
             </div>
-
-            <div id="errorArea" class="error-area hidden">
-                <p id="errorMsg"></p>
-                <button id="manualInputBtn" class="secondary-btn">手動で数値を入力する</button>
-            </div>
         </section>
-
-        <!-- 手動入力モーダル -->
-        <div id="manualModal" class="modal hidden">
-            <div class="modal-content card">
-                <h2>数値を直接入力</h2>
-                <div class="form-group">
-                    <label>累計再生回数</label>
-                    <input type="number" id="manualViews" placeholder="例: 1000000">
-                </div>
-                <div class="form-group">
-                    <label>公開日</label>
-                    <input type="date" id="manualDate">
-                </div>
-                <div class="modal-actions">
-                    <button id="cancelManual" class="secondary-btn">キャンセル</button>
-                    <button id="submitManual" class="primary-btn">判定する</button>
-                </div>
-            </div>
-        </div>
 
         <section class="info-section">
             <div class="rank-tables">
@@ -90,22 +72,64 @@
                     <h3>人気度ランク (Ω〜G)</h3>
                     <table>
                         <thead>
-                            <tr><th>ランク</th><th>1日あたりの再生数</th></tr>
+                            <tr>
+                                <th>ランク</th>
+                                <th>1日あたりの再生数</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr><td>🌌 Ω</td><td>1,000,000以上</td></tr>
-                            <tr><td>👑 UX</td><td>750,000以上</td></tr>
-                            <tr><td>✨ EX</td><td>500,000以上</td></tr>
-                            <tr><td>💎 ZZ</td><td>250,000以上</td></tr>
-                            <tr><td>🟥 Z</td><td>100,000以上</td></tr>
-                            <tr><td>🟧 S</td><td>50,000以上</td></tr>
-                            <tr><td>🟨 A</td><td>10,000以上</td></tr>
-                            <tr><td>🟩 B</td><td>5,000以上</td></tr>
-                            <tr><td>🟦 C</td><td>1,000以上</td></tr>
-                            <tr><td>🟪 D</td><td>500以上</td></tr>
-                            <tr><td>🟫 E</td><td>250以上</td></tr>
-                            <tr><td>⬜ F</td><td>100以上</td></tr>
-                            <tr><td>🫧 G</td><td>100未満</td></tr>
+                            <tr>
+                                <td>🌌 Ω</td>
+                                <td>1,000,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>👑 UX</td>
+                                <td>750,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>✨ EX</td>
+                                <td>500,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>💎 ZZ</td>
+                                <td>250,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟥 Z</td>
+                                <td>100,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟧 S</td>
+                                <td>50,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟨 A</td>
+                                <td>10,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟩 B</td>
+                                <td>5,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟦 C</td>
+                                <td>1,000以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟪 D</td>
+                                <td>500以上</td>
+                            </tr>
+                            <tr>
+                                <td>🟫 E</td>
+                                <td>250以上</td>
+                            </tr>
+                            <tr>
+                                <td>⬜ F</td>
+                                <td>100以上</td>
+                            </tr>
+                            <tr>
+                                <td>🫧 G</td>
+                                <td>100未満</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -114,17 +138,53 @@
                     <h3>時期ランク (多段階版)</h3>
                     <table>
                         <thead>
-                            <tr><th>ランク</th><th>経過日数</th><th>呼び方</th></tr>
+                            <tr>
+                                <th>ランク</th>
+                                <th>経過日数</th>
+                                <th>呼び方</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr><td>🆕 N</td><td>0〜30日</td><td>新作</td></tr>
-                            <tr><td>⚡ F</td><td>31〜90日</td><td>フレッシュ</td></tr>
-                            <tr><td>⏱ R</td><td>91〜365日</td><td>最近</td></tr>
-                            <tr><td>📦 M1</td><td>1〜3年</td><td>中期（前期）</td></tr>
-                            <tr><td>📦 M2</td><td>3〜5年</td><td>中期（後期）</td></tr>
-                            <tr><td>🏛 L1</td><td>5〜10年</td><td>古典（初期）</td></tr>
-                            <tr><td>🏛 L2</td><td>10〜15年</td><td>古典（中期）</td></tr>
-                            <tr><td>🏛 L3</td><td>15年以上</td><td>歴史的古典</td></tr>
+                            <tr>
+                                <td>🆕 N</td>
+                                <td>0〜30日</td>
+                                <td>新作</td>
+                            </tr>
+                            <tr>
+                                <td>⚡ F</td>
+                                <td>31〜90日</td>
+                                <td>フレッシュ</td>
+                            </tr>
+                            <tr>
+                                <td>⏱ R</td>
+                                <td>91〜365日</td>
+                                <td>最近</td>
+                            </tr>
+                            <tr>
+                                <td>📦 M1</td>
+                                <td>1〜3年</td>
+                                <td>中期（前期）</td>
+                            </tr>
+                            <tr>
+                                <td>📦 M2</td>
+                                <td>3〜5年</td>
+                                <td>中期（後期）</td>
+                            </tr>
+                            <tr>
+                                <td>🏛 L1</td>
+                                <td>5〜10年</td>
+                                <td>古典（初期）</td>
+                            </tr>
+                            <tr>
+                                <td>🏛 L2</td>
+                                <td>10〜15年</td>
+                                <td>古典（中期）</td>
+                            </tr>
+                            <tr>
+                                <td>🏛 L3</td>
+                                <td>15年以上</td>
+                                <td>歴史的古典</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -134,4 +194,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
