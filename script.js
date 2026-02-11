@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rankDescription.textContent = `${result.pRank.icon} ${result.pRank.rank}級の${result.tRank.label}`;
 
         dailyViews.textContent = Math.floor(result.popularityIndex).toLocaleString();
-        elapsedDays.textContent = `${result.diffDays} 日`;
+        elapsedDays.textContent = formatElapsed(result.diffMs);
         totalViews.textContent = views.toLocaleString();
 
         resultArea.classList.remove('hidden');
@@ -192,19 +192,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateRank(views, publishedAt) {
         const now = new Date();
-        // Reset time to midnight for accurate day comparison
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const pubDay = new Date(publishedAt.getFullYear(), publishedAt.getMonth(), publishedAt.getDate());
-
-        const diffTime = Math.abs(today - pubDay);
-        const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+        const diffMs = Math.abs(now - publishedAt);
+        // Use fractional days for precision (minimum 1 minute = ~0.000694 days)
+        const diffDays = Math.max(1 / 1440, diffMs / (1000 * 60 * 60 * 24));
 
         const popularityIndex = views / diffDays;
 
         const pRank = POPULARITY_RANKS.find(r => popularityIndex >= r.threshold);
         const tRank = TIMING_RANKS.find(r => diffDays <= r.maxDays);
 
-        return { pRank, tRank, popularityIndex, diffDays };
+        return { pRank, tRank, popularityIndex, diffDays, diffMs };
+    }
+
+    function formatElapsed(diffMs) {
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const totalMinutes = Math.floor(totalSeconds / 60);
+        const totalHours = Math.floor(totalMinutes / 60);
+        const totalDays = Math.floor(totalHours / 24);
+
+        if (totalDays >= 1) {
+            const remainHours = totalHours % 24;
+            return `${totalDays} 日 ${remainHours} 時間`;
+        } else if (totalHours >= 1) {
+            const remainMinutes = totalMinutes % 60;
+            return `${totalHours} 時間 ${remainMinutes} 分`;
+        } else {
+            return `${totalMinutes} 分`;
+        }
     }
 
     function showLoader() { loader.classList.remove('hidden'); }
